@@ -1,0 +1,38 @@
+                   |00| SET R4 , 0x0F
+                   |02| STR [ 0xF0 ] , R4
+                   |04| SET R0 , 0x00
+                   |06| SET R3 , 0x02
+                   |08| STR [ 0xF1 ] , R3
+                   |0a| SET R2 , 0x00
+                   |0c| SET R6 , rai
+                   |0e| STR [ 0x00 ] , R6
+                   |10| STI
+             motor |12| LOAD R4 , [ 0xF0 ]
+                   |14| SET R7 , 0x0C
+                   |16| CMP R4 , R7
+                   |18| JZ disminuyoVelocidad
+                   |1a| SET R1 , 0xFA
+                   |1c| JMP motor
+disminuyoVelocidad |1e| SET R1 , 0x01
+                   |20| JMP motor
+               rai |22| SET R7 , 0x00
+                   |24| CMP R0 , R7
+                   |26| JZ estamosEnCurva
+                   |28| JMP noEstamosEnCurva
+    estamosEnCurva |2a| SET R0 , 0x01
+                   |2c| SET R4 , 0x0C
+                   |2e| STR [ 0xF0 ] , R4
+                   |30| IRET
+  noEstamosEnCurva |32| SET R0 , 0x00
+                   |34| SET R7 , 0x0F
+                   |36| STR [ 0xF0 ] , R7
+                   |38| INC R2
+                   |3a| SET R4 , 0xFF
+                   |3c| CMP R2 , R4
+                   |3e| JZ incrementarBocina
+                   |40| IRET
+ incrementarBocina |42| LOAD R3 , [ 0XF1 ]
+                   |44| INC R3
+                   |46| STR [ 0XF1 ] , R3
+                   |48| SET R2 , 0x00
+                   |4a| IRET
